@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    .task-list {
+        display: flex;
+        flex-direction: column; /* タスクを縦に積む */
+        gap: 15px; /* 各タスク間の余白 */
+    }
+
+    .task-item {
+        border: 1px solid #ccc;
+        padding: 15px;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
+
+    .update-form {
+        display: flex;   /* フォームの中身を横並びにする */
+        flex-wrap: wrap; /* 画面が狭いと折り返す */
+        align-items: center; /* 高さを中央揃え */
+        gap: 15px;       /* フォーム部品間の余白 */
+    }
+
+    .update-form > div {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+    
+    .delete-form {
+        margin-top: 10px; /* 更新フォームとの余白 */
+    }
+    
+</style>
+
+<body>
+        <a href="/">mypage</a>
+    <nav class="vertical-nav">
+        {% block content %}
+        {% endblock %}
+    </nav>
+</body>
+</html>

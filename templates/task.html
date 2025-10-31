@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>タスク管理</h1>
+
+<form method="POST">
+    <label for="title">タスク</label>
+    <input type="text" name="title">
+    <label for="due_date">期限</label>
+    <input type="date" name="due_date">
+    <label for="priority">重要度</label>
+    <input type="number" name="priority" value="3">
+    <label for="progress">進捗</label>
+    <input type="number" name="progress" min="0" max="100" value="0">
+    <input type="submit" value="新規">
+</form>
+
+<hr>
+<h2>一覧</h2>
+
+<div class="task-list">
+    {% for task in tasks %}
+    <div class="task-item">
+        
+        <form action="{{ url_for('task_edit', task_id=task.id) }}" method="POST" class="update-form">
+            
+            <div>
+                <input type="checkbox" name="is_completed" value="true" {% if task.is_completed %}checked{% endif %}>
+                <strong>{{ task.title }}</strong> </div>
+            
+            <div>
+                <label>期限:</label>
+                <input type="date" name="due_date" value="{{ task.due_date.isoformat() if task.due_date }}">
+            </div>
+
+            <div>
+                <label>重要度:</label>
+                <input type="number" name="priority" value="{{ task.priority }}" style="width: 60px;">
+            </div>
+
+            <div>
+                <label>進捗:</label>
+                <input type="number" name="progress" value="{{ task.progress }}" min="0" max="100" style="width: 70px;">
+            </div>
+
+            <div>
+                <button type="submit">更新</button>
+            </div>
+        
+
+            <div><form action="{{ url_for('task_delete', task_id=task.id) }}" method="POST" class="delete-form">
+            <button type="submit">削除</button></form></div>
+        </form>
+
+    </div>
+    {% endfor %}
+</div>
+{% endblock%}
