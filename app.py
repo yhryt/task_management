@@ -14,6 +14,9 @@ else:
     basedir = os.path.abspath(os.path.dirname(__file__))
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'task.db')
     
+#external_url = "postgresql://task_database_nbrp_user:0plzZ2YJcEW8UBrs9n6IX24NRvZG84Kt@dpg-d42e7q95pdvs73d17gag-a.oregon-postgres.render.com/task_database_nbrp" # あなたのURLに置き換える
+#app.config['SQLALCHEMY_DATABASE_URI'] = external_url
+
 db = SQLAlchemy(app)
 
 class Task(db.Model):
@@ -71,16 +74,17 @@ def task_delete(task_id):
 def task_edit(task_id):
     task = Task.query.get_or_404(task_id)
 
-    task.is_completed = request.form.get('is_completed') == 'true'
+    if request.method == 'POST':
+        task.is_completed = request.form.get('is_completed') == 'true'
 
-    due_date_str = request.form.get('due_date')
-    task.due_date = datetime.datetime.strptime(due_date_str, '%Y-%m-%d').date() if due_date_str else None
+        due_date_str = request.form.get('due_date')
+        task.due_date = datetime.datetime.strptime(due_date_str, '%Y-%m-%d').date() if due_date_str else None
 
-    priority_str = request.form.get('priority')
-    task.priority = int(priority_str) if priority_str else 3
+        priority_str = request.form.get('priority')
+        task.priority = int(priority_str) if priority_str else 3
 
-    progress_str = request.form.get('progress')
-    task.progress = int(progress_str) if progress_str else 0
+        progress_str = request.form.get('progress')
+        task.progress = int(progress_str) if progress_str else 0
     
-    db.session.commit()
+        db.session.commit()
     return redirect(url_for('task'))
