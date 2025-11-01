@@ -47,8 +47,9 @@
             </div>
         
 
-            <div><form action="{{ url_for('task_delete', task_id=task.id) }}" method="POST" class="delete-form">
-            <button type="submit">削除</button></form></div>
+            <form action="{{ url_for('task_delete', task_id=task.id) }}" method="POST" class="delete-form">
+                <button type="submit">削除</button>
+            </form>
         </form>
 
     </div>
