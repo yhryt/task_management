@@ -19,9 +19,6 @@ else:
 
 db = SQLAlchemy(app)
 
-with app.app_context():
-    db.create_all()
-
 class Task(db.Model):
     __tablename__ = 'tasks'
 
@@ -40,6 +37,9 @@ class DailyLog(db.Model):
     score = db.Column(db.Integer, nullable=True) 
     rank = db.Column(db.String(5), nullable=True)      # A〜Dランク
     memo = db.Column(db.Text, nullable=True)           # メモ
+
+with app.app_context():
+    db.create_all()
 
 def get_current_score_and_rank():
     # 'is_completed' が無くなったので、全タスクが対象
