@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>日次レポート ({{ today_str }})</h1>
+
+<div>
+    <h2>今日の達成度</h2>
+    {% if todays_log.score is not none %}
+        <h3 style="font-size: 2em; margin: 0;">ランク: {{ todays_log.rank }}</h3>
+        <p>(スコア: {{ todays_log.score }})</p>
+    {% else %}
+        <p>（本日が期限のタスクはありません）</p>
+    {% endif %}
+
+    <hr>
+    <form method="POST">
+        <label for="memo"><h3>今日のメモ</h3></label>
+        <textarea name="memo" id="memo" rows="5" style="width: 80%;">{{ todays_log.memo if todays_log else '' }}</textarea>
+        <p><button type="submit">メモを保存</button></p>
+    </form>
+</div>
+
+<hr>
+<h2>過去のレポート</h2>
+<div class="task-list">
+    {% for log in past_logs %}
+    <div class="task-item">
+        <strong>{{ log.date.isoformat() }} - ランク: {{ log.rank }}</strong>
+        <p>(達成率: {{ "%.2f"|format(log.score)}} %)</p>
+        <p style="white-space: pre-wrap; margin-top: 10px;">{{ log.memo }}</p>
+    </div>
+    {% else %}
+    <p>過去の記録はありません。</p>
+    {% endfor %}
+</div>
+{% endblock %}

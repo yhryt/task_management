@@ -7,43 +7,273 @@
 </head>
 
 <style>
+    /* :root は、サイト全体で使う「色の変数」を定義する場所です */
+    :root {
+        --bg-main: #1a1a1a;       /* 全体の背景色 (暗いグレー) */
+        --bg-container: #2c2c2c;  /* タスクやフォームの背景色 */
+        --border-color: #444;     /* 枠線の色 */
+        --text-main: #f0f0f0;      /* メインの文字色 (白) */
+        --text-secondary: #aaa;   /* ラベルなど (薄いグレー) */
+        --accent-color: #007bff;   /* 更新ボタン (青) */
+        --accent-hover: #0056b3;
+        --danger-color: #dc3545;  /* 削除ボタン (赤) */
+        --danger-hover: #c82333;
+    }
+
+    /* --- 1. 全体の設定 --- */
+    body {
+        background-color: var(--bg-main);
+        color: var(--text-main);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* --- 2. ヘッダー --- */
+    .site-header {
+        background-color: var(--bg-container); /* ヘッダーの背景色 */
+        border-bottom: 1px solid var(--border-color);
+        padding: 10px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .site-header .logo {
+        color: white;
+        text-decoration: none;
+        font-size: 1.5em;
+        font-weight: bold;
+    }
+    .site-header nav a {
+        color: white;
+        text-decoration: none;
+        margin-left: 15px;
+    }
+    .site-header nav a:hover {
+        text-decoration: underline;
+    }
+
+    /* --- 3. メインコンテンツのラッパー --- */
+    /* (ステップ2で <div class="main-content"> を追加します) */
+    .main-content {
+        padding: 20px;
+        max-width: 900px; /* 画面が広すぎても見やすいように幅を制限 */
+        margin: 0 auto;   /* 中央揃え */
+    }
+
+    /* --- 4. 見出し --- */
+    h1, h2, h3 {
+        color: white;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 10px;
+    }
+    h2 {
+        font-size: 1.5em;
+    }
+
+    /* --- 5. フォーム部品 (input, button) --- */
+    input[type="text"],
+    input[type="date"],
+    input[type="number"],
+    select {
+        background-color: #333;
+        color: var(--text-main);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        padding: 8px;
+        font-size: 1em;
+    }
+    input:focus {
+        outline: none;
+        border-color: var(--accent-color);
+        box-shadow: 0 0 5px var(--accent-color);
+    }
+    label {
+        color: var(--text-secondary);
+        margin-right: 5px;
+        margin-left: 10px;
+    }
+
+    /* --- 6. ボタン (新規, 更新, 削除) --- */
+    button,
+    input[type="submit"] {
+        border: none;
+        border-radius: 4px;
+        padding: 8px 12px;
+        font-size: 1em;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+    /* 「新規」「更新」ボタン (青) */
+    .update-form button,
+    input[type="submit"] {
+        background-color: var(--accent-color);
+        color: white;
+    }
+    .update-form button:hover,
+    input[type="submit"]:hover {
+        background-color: var(--accent-hover);
+    }
+    /* 「削除」ボタン (赤) */
+    .delete-form button {
+        background-color: var(--danger-color);
+        color: white;
+    }
+    .delete-form button:hover {
+        background-color: var(--danger-hover);
+    }
+
+
+    /* --- 7. タスクのリストとアイテム --- */
     .task-list {
         display: flex;
-        flex-direction: column; /* タスクを縦に積む */
-        gap: 15px; /* 各タスク間の余白 */
+        flex-direction: column;
+        gap: 15px;
     }
-
     .task-item {
-        border: 1px solid #ccc;
-        padding: 15px;
+        background-color: var(--bg-container);
+        border: 1px solid var(--border-color);
+        padding: 8px;
         border-radius: 8px;
-        background-color: #f9f9f9;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        
+        /* (前回の修正: 更新と削除を横並びにする) */
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
     }
+    /* (スコア表示欄も .task-item を使っているので、自動で適用されます) */
 
+
+    /* --- 8. フォームのレイアウト --- */
+    /* 「新規」フォームのレイアウト */
+    form {
+        margin-bottom: 20px;
+    }
+    
+    /* 「更新」フォーム */
     .update-form {
-        display: flex;   /* フォームの中身を横並びにする */
-        flex-wrap: wrap; /* 画面が狭いと折り返す */
-        align-items: center; /* 高さを中央揃え */
-        gap: 15px;       /* フォーム部品間の余白 */
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 15px;
     }
-
     .update-form > div {
         display: flex;
         align-items: center;
-        gap: 5px;
+        gap: 3px;
+    }
+    .update-form strong {
+        font-size: 1.2em;
     }
     
+    /* 「削除」フォーム (マージン調整) */
     .delete-form {
-        margin-top: 10px; /* 更新フォームとの余白 */
+        padding: 15px;
+    }
+
+
+   @media (max-width: 768px) {
+        
+        .main-content {
+            padding: 10px;
+        }
+
+        /* 文字サイズをスマホ時だけ小さくする */
+        h1 { font-size: 1.8em; }
+        h2 { font-size: 1.3em; }
+        h3 { font-size: 1.1em; }
+        p { font-size: 0.9em; }
+        .update-form strong { font-size: 1.1em; } /* タイトル */
+        label { 
+            font-size: 0.9em; 
+            color: var(--text-secondary);
+        }
+
+        /* タスクアイテムのレイアウトを縦積みに変更 */
+        .task-item {
+            flex-direction: column; /* ★縦積みにする */
+            align-items: stretch;   /* ★幅いっぱいに伸ばす */
+            padding: 15px;
+        }
+
+        /* 「更新」フォームも縦積み */
+        .update-form {
+            flex-direction: column; /* ★縦積みにする */
+            align-items: stretch;   /* ★幅いっぱいに伸ばす */
+            gap: 10px; 
+            width: 100%;
+            margin-bottom: 0;
+        }
+        
+        /* 更新フォーム内の各要素も調整 */
+        .update-form > div {
+            flex-direction: column; /* ★縦積みにする */
+            align-items: stretch;   
+            gap: 5px;
+        }
+
+        .form-row {
+            flex-direction: row !important; /* ★強制的に横並びに戻す */
+            gap: 8px;
+        }
+        
+        /* (横並びクラス .form-row も強制的に縦積みに上書き) */
+        .form-row > div {
+            flex: 1; /* ★利用可能なスペースを分け合う */
+            flex-direction: column !important; 
+            align-items: stretch !important;
+        }
+
+        /* 更新ボタンを幅いっぱいに */
+        .update-form button {
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        /* 「削除」フォームも幅いっぱいに */
+        .delete-form {
+            margin-left: 0;
+            margin-top: 10px; /* 更新フォームとの間に余白 */
+            padding: 0;
+            width: 100%;
+        }
+        
+        /* 削除ボタンを幅いっぱいに */
+        .delete-form button {
+            width: 100%;
+        }
+
+        /* --- 新規追加フォームの調整 --- */
+        form label { 
+            margin-left: 0;
+            display: block; 
+            margin-top: 10px;
+        }
+        input[type="text"],
+        input[type="date"],
+        input[type="number"] {
+            width: 95%; 
+        }
     }
     
 </style>
 
 <body>
-        <a href="/">mypage</a>
-    <nav class="vertical-nav">
+
+    <header class="site-header">
+        <a href="{{ url_for('mypage') }}" class="logo">My Task App</a>
+        <nav>
+            <a href="{{ url_for('mypage') }}">マイページ</a>
+            <a href="{{ url_for('task') }}">タスク管理</a>
+            <a href="{{ url_for('report') }}">日次レポート</a>
+        </nav>
+    </header>
+
+    <div class="main-content">
         {% block content %}
         {% endblock %}
-    </nav>
-</body>
+    </div>
+    </body>
 </html>
