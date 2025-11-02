@@ -97,7 +97,10 @@ def task():
         db.session.commit()
         return redirect('/task')
     else:
-        tasks = Task.query.order_by(Task.priority.asc(), Task.due_date.asc()).all()
+        tasks = Task.query.order_by(
+            db.nullslast(Task.due_date.asc()), 
+            Task.priority.asc()
+        ).all()
 
         current_score, current_rank = get_current_score_and_rank()
 

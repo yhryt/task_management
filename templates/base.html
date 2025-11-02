@@ -134,15 +134,29 @@
     .task-item {
         background-color: var(--bg-container);
         border: 1px solid var(--border-color);
-        padding: 8px;
+        padding: 15px;
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         
-        /* (前回の修正: 更新と削除を横並びにする) */
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
+        display: block;
     }
+
+
+    /* PCでのタイトル */
+    .task-title {
+        font-size: 1.4em;
+        font-weight: bold;
+        margin-bottom: 15px; /* タイトルと操作パネルの隙間 */
+    }
+    /* PCでの操作パネル */
+    .task-controls {
+        display: flex;
+        flex-direction: row; /* 横並び */
+        flex-wrap: wrap;     /* 画面が狭ければ折り返す */
+        align-items: center;
+        gap: 10px;
+    }
+
     /* (スコア表示欄も .task-item を使っているので、自動で適用されます) */
 
 
@@ -185,66 +199,56 @@
         h2 { font-size: 1.3em; }
         h3 { font-size: 1.1em; }
         p { font-size: 0.9em; }
-        .update-form strong { font-size: 1.1em; } /* タイトル */
         label { 
-            font-size: 0.9em; 
+            font-size: 0.85em; 
             color: var(--text-secondary);
         }
 
-        /* タスクアイテムのレイアウトを縦積みに変更 */
-        .task-item {
-            flex-direction: column; /* ★縦積みにする */
-            align-items: stretch;   /* ★幅いっぱいに伸ばす */
-            padding: 15px;
+        /* PCでは .task-title を使っているので、スマホでも指定 */
+        .task-title strong {
+            font-size: 1.1em; 
         }
 
-        /* 「更新」フォームも縦積み */
-        .update-form {
-            flex-direction: column; /* ★縦積みにする */
-            align-items: stretch;   /* ★幅いっぱいに伸ばす */
-            gap: 10px; 
-            width: 100%;
-            margin-bottom: 0;
+        /* タスクアイテムの余白を減らす */
+        .task-item {
+            padding: 12px;
         }
         
-        /* 更新フォーム内の各要素も調整 */
-        .update-form > div {
-            flex-direction: column; /* ★縦積みにする */
-            align-items: stretch;   
-            gap: 5px;
+        /* 操作パネルの隙間を調整 */
+        .task-controls {
+            gap: 10px;
         }
-
+        
+        /* 更新フォーム */
+        .update-form {
+            gap: 10px;
+        }
+        
+        /* 「期限」「重要度」「進捗」の行 */
         .form-row {
-            flex-direction: row !important; /* ★強制的に横並びに戻す */
+            flex-direction: row !important; 
             gap: 8px;
         }
-        
-        /* (横並びクラス .form-row も強制的に縦積みに上書き) */
         .form-row > div {
-            flex: 1; /* ★利用可能なスペースを分け合う */
+            flex: 1; 
             flex-direction: column !important; 
             align-items: stretch !important;
         }
+        .form-row input {
+            font-size: 0.9em;
+            padding: 5px;
+            width: auto;
+        }
 
-        /* 更新ボタンを幅いっぱいに */
-        .update-form button {
+        /* 「更新」「削除」ボタンの行 */
+        .button-row {
+            display: flex;
+            flex-direction: row; 
+            gap: 10px;
             width: 100%;
             margin-top: 5px;
         }
-
-        /* 「削除」フォームも幅いっぱいに */
-        .delete-form {
-            margin-left: 0;
-            margin-top: 10px; /* 更新フォームとの間に余白 */
-            padding: 0;
-            width: 100%;
-        }
         
-        /* 削除ボタンを幅いっぱいに */
-        .delete-form button {
-            width: 100%;
-        }
-
         /* --- 新規追加フォームの調整 --- */
         form label { 
             margin-left: 0;
@@ -259,6 +263,7 @@
     }
     
 </style>
+    
 
 <body>
 
